@@ -1,0 +1,12 @@
+<div style="border: 1px solid red;
+    border: 1px solid red;
+    display: -webkit-inline-box;">
+    <signature-pad 
+    [options]="signaturePadOptions" 
+    (onBeginEvent)="drawStart()"
+    (onEndEvent)="drawComplete()">
+
+    </signature-pad>
+</div>
+<button (click)="save()">save</button>
+<button (click)="read()">read</button>

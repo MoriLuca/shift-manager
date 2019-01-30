@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+.transition3 {
+    transition: all .3s ease-in-out;
+    -webkit-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+}
+
+/*
+.btn-outline-dark {
+    color: darkmagenta !important;
+    border-color: darkmagenta !important;
+}
+
+.btn-outline-dark:hover {
+    color: #fff !important;
+    background-color: darkmagenta !important;
+    border-color: black;
+}
+*/

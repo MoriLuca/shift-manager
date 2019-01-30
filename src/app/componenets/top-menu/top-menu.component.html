@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand transition3" routerLink="/"><img class="logo" src="../../../assets/media/logoRIboni.png" alt=""></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/pad">pad</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/produzione">Produzione</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/recipes">Ricette</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Monitoraggio PLC
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" routerLink="/resume">Resume<fa name="list" style="float:right; color: gray;"></fa> </a>
+          <a class="dropdown-item" routerLink="/tags">Tags<fa name="tags" style="float:right; color: dodgerblue;"></fa> </a>
+          <a class="dropdown-item" routerLink="/utilityTags">Utility<fa name="tags" style="float:right; color: forestgreen;"></fa></a>
+          <a class="dropdown-item" routerLink="/criticalTags">Importanti<fa name="exclamation-circle" style="float:right; color: gold;"></fa></a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="/alarmsTags">Allarmi<fa name="bell" style="float:right; color: red;"></fa></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+ 
+</nav>
+<div class="outborder"></div>
