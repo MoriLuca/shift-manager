@@ -10,3 +10,6 @@
 </div>
 <button (click)="save()">save</button>
 <button (click)="read()">read</button>
+<button (click)="readIMG()">read img</button>
+<hr>
+<input type="file" id="avatar" (change)="onFileChange($event)" #fileInput>

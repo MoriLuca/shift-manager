@@ -9,16 +9,25 @@ import { map, catchError, tap } from 'rxjs/operators';
 })
 export class ApiService {
 
-  private backendUrl = "localhost:1880/";
+  private backendUrl = "http://192.168.33.201:1880/";
   
   private endpoint = this.backendUrl + 'api/';
   private httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type':  'application/json',  
+    'Content-Type':  'application/json',
   })
 };
 
   constructor(private http: HttpClient) { }
+
+  salvaRapportino (firma: any) {
+    console.log(firma);
+    let body =  JSON.stringify(firma);
+    console.log(body);
+    return this.http.post(this.endpoint + '', body, this.httpOptions);
+    //return this.http.get(this.endpoint + '', this.httpOptions);
+  }
+
 
   // // post and get 
   // addNewPerson (user:UserForDotnet) {
