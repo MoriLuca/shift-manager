@@ -22,21 +22,15 @@
 
 
 
-<div *ngIf="_commessaSelezionata">
-    <h1 >Riepilogo di Lavoro per Cliente {{_clienteSelezionato.nome}} -> Commessa {{_commessaSelezionata.nome}} </h1>
 
-    <p>Tipo di lavoro</p>
-    <select [(ngModel)]="_resocontoLavoro.tipologialavoro">
-      <option *ngFor="let t of _scelteTipoLavoro" [ngValue]="t.value">{{t.nome}}</option>
-    </select>
-    <p>val : {{_resocontoLavoro.tipologialavoro}}</p>
     
     
-    
-    
-    
-    
-    <table>
+ 
+
+<hr>
+<form [formGroup]="p" (ngSubmit)="onSubmit()">
+  
+  <table>
       <tr>
         <th>Data Intervento</th>
         <th>Ore Lavoro</th>
@@ -45,16 +39,23 @@
         <th>Chilometri</th>
       </tr>
       <tr>
-        <td><input type="date"   [ngModel]="_resocontoLavoro.dataintervento | date:'yyyy-MM-dd'" (ngModelChange)="_resocontoLavoro.dataintervento = $event"></td>
-        <td><input type="number" [(ngModel)]="_resocontoLavoro.totalelavoro"></td>
-        <td><input type="number" [(ngModel)]="_resocontoLavoro.totaleviaggio"></td>
-        <td><input type="number" [(ngModel)]="_resocontoLavoro.spese" [attr.disabled]="(_resocontoLavoro.tipologialavoro == 2) ? '' : null"></td>
-        <td><input type="number" [(ngModel)]="_resocontoLavoro.km" [attr.disabled]="(_resocontoLavoro.tipologialavoro == 2) ? '' : null"></td>
+        <td><input type="date"   formControlName="dataintervento" ></td>
+        <td><input type="number" formControlName="totalelavoro" ></td>
+        <td><input type="number" formControlName="totaleviaggio" ></td>
+        <td><input type="number" formControlName="spese"></td>
+        <td><input type="number" formControlName="km"></td>
+        <!-- <td><input type="number" formControlName="km"  [attr.disabled]="(_resocontoLavoro.tipologialavoro == 2) ? '' : null"></td> -->
       </tr>
     </table>
+    <div formArrayName="scontrini"
+      *ngFor="let item of p.controls['scontrini'].controls; let i = index">
+      <div [formGroupName]="i">
+        <input type="file" formControlName='body'>
+      </div>
+    </div>
+    <button type="button" (click)="aggiungiNuovoScontrino()">Aggiungi nuovo scontrino</button>
+    <hr>
+    <input type="text" formControlName="info">
+    <button type="submit" [disabled]="!p.valid">Submit</button>
     
-    Informazioni lavoro
-    <input type="text" [(ngModel)]="_resocontoLavoro.info">
-    
-    <button (click)="salvaResocontoLavoro()">salva</button>
-</div>
+</form>
