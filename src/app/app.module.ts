@@ -19,6 +19,7 @@ import { NotFoundComponentComponent } from './componenets/not-found-component/no
 //signature pad
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignaturePadComponent } from './componenets/signature-pad/signature-pad.component';
+import { NuovoResocontoLavoroComponent } from './componenets/nuovo-resoconto-lavoro/nuovo-resoconto-lavoro.component';
 
 
 
@@ -31,6 +32,7 @@ import { SignaturePadComponent } from './componenets/signature-pad/signature-pad
     HomeComponent,
     NotFoundComponentComponent,
     SignaturePadComponent,
+    NuovoResocontoLavoroComponent,
   ],
   imports: [
     BrowserModule,

@@ -28,7 +28,9 @@ export class ApiService {
     //return this.http.get(this.endpoint + '', this.httpOptions);
   }
 
-
+  getElelncoClienti(){
+    
+  }
   // // post and get 
   // addNewPerson (user:UserForDotnet) {
   //   let body =  JSON.stringify(user);
