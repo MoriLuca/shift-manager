@@ -1,3 +1,60 @@
-<p>
-  nuovo-resoconto-lavoro works!
-</p>
+<input type="text" [(ngModel)]="_ricercaCliente">
+<table>
+  <tr>
+      <th>Nome Cliente</th>
+  </tr>
+  <tr *ngFor="let cliente of _clienti"
+      (click)="getCommesseFromClientId(cliente)">
+    <td *ngIf="cliente.nome.toLowerCase().includes(_ricercaCliente.toLowerCase())">{{cliente.nome}}</td>
+  </tr>
+</table>
+
+<input type="text" [(ngModel)]="_ricercaCommessa">
+<table>
+  <tr>
+      <th>Titolo Commessa</th>
+  </tr>
+  <tr *ngFor="let commessa of _commesse"
+      (click)="setCommessaSelezionata(commessa)">
+    <td *ngIf="commessa.nome.toLowerCase().includes(_ricercaCommessa.toLowerCase())">{{commessa.nome}}</td>
+  </tr>
+</table>
+
+
+
+<div *ngIf="_commessaSelezionata">
+    <h1 >Riepilogo di Lavoro per Cliente {{_clienteSelezionato.nome}} -> Commessa {{_commessaSelezionata.nome}} </h1>
+
+    <p>Tipo di lavoro</p>
+    <select [(ngModel)]="_resocontoLavoro.tipologialavoro">
+      <option *ngFor="let t of _scelteTipoLavoro" [ngValue]="t.value">{{t.nome}}</option>
+    </select>
+    <p>val : {{_resocontoLavoro.tipologialavoro}}</p>
+    
+    
+    
+    
+    
+    
+    <table>
+      <tr>
+        <th>Data Intervento</th>
+        <th>Ore Lavoro</th>
+        <th>Ore Viaggio</th>
+        <th>Spese</th>
+        <th>Chilometri</th>
+      </tr>
+      <tr>
+        <td><input type="date"   [ngModel]="_resocontoLavoro.dataintervento | date:'yyyy-MM-dd'" (ngModelChange)="_resocontoLavoro.dataintervento = $event"></td>
+        <td><input type="number" [(ngModel)]="_resocontoLavoro.totalelavoro"></td>
+        <td><input type="number" [(ngModel)]="_resocontoLavoro.totaleviaggio"></td>
+        <td><input type="number" [(ngModel)]="_resocontoLavoro.spese" [attr.disabled]="(_resocontoLavoro.tipologialavoro == 2) ? '' : null"></td>
+        <td><input type="number" [(ngModel)]="_resocontoLavoro.km" [attr.disabled]="(_resocontoLavoro.tipologialavoro == 2) ? '' : null"></td>
+      </tr>
+    </table>
+    
+    Informazioni lavoro
+    <input type="text" [(ngModel)]="_resocontoLavoro.info">
+    
+    <button (click)="salvaResocontoLavoro()">salva</button>
+</div>
