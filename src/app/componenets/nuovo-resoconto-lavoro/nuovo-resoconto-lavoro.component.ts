@@ -5,6 +5,8 @@ import { CommessaBasic } from 'src/app/models/commesse/commessaBasic';
 import { ResocontoLavoro } from 'src/app/models/resoconto-lavoro/resoconto-lavoro';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { GlobalRuntimeConfigService } from 'src/app/services/globalRuntimeConfig/global-runtime-config.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
 @Component({
   selector: 'app-nuovo-resoconto-lavoro',
@@ -25,26 +27,11 @@ export class NuovoResocontoLavoroComponent implements OnInit {
   private _commesse: CommessaBasic[];
   constructor(private _api: ApiService,
               private _fb: FormBuilder,
-              private _rntSrv: GlobalRuntimeConfigService) {
+              private _rntSrv: GlobalRuntimeConfigService,
+              public sanitizer: DomSanitizer) {
   }
 
-//generazione campo scontrino per la form group
-generateScontrino(){
-  return this._fb.group({
-    body: [''],
-  })
-}
 
-//aggiunta di un nuovo scontrino nella form
-aggiungiNuovoScontrino(){
-  (this.form.controls['scontrini'] as FormArray).push(this.generateScontrino())
-  
-}
-
-//rimozione scontrino dalla form in base all'index passato alla funzione
-rimuoviScontrino(index: number){
-  (this.form.controls['scontrini'] as FormArray).removeAt(index);
-}
 
 ///////////////////
 
@@ -62,7 +49,7 @@ rimuoviScontrino(index: number){
     //creo la reactive form per la gestione del nuovo resoconto di lavoro
     this.form = this._fb.group({
       utenteId: [this._rntSrv.getUser().id ,Validators.min(1)],
-      commessaId: [-1, Validators.min(1)],
+      commessaId: [1, Validators.min(1)],
       dataintervento: [new Date().toISOString().substring(0,10)],
       totalelavoro: [0, [Validators.min(0), Validators.max(24)]],
       totaleviaggio: [0, [Validators.min(0), Validators.max(24)]],
@@ -89,6 +76,7 @@ rimuoviScontrino(index: number){
   }
 
   onSubmit(){
+
     console.warn(this.form.value);
     if(this.form.controls["tipologialavoro"].value == 2) {
       if (this.form.controls["spese"].value> 0 || this.form.controls["km"].value > 0){
@@ -97,10 +85,74 @@ rimuoviScontrino(index: number){
         this.form.controls["km"].setValue(0);
       }
     }
-    let r: ResocontoLavoro = <ResocontoLavoro> this.form.getRawValue();
+    let r: ResocontoLavoro = <ResocontoLavoro> this.form.value;
     this._api.postSalvataggioResocontoLavoro(r).subscribe((res)=>{
       console.log(res);
       
     });
   }
+
+
+
+  onFileChange(event, index){
+    
+    let reader = new FileReader();
+    if(event.target.files && event.target.files.length > 0) {
+      let file = event.target.files[0];
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        // this.form.get('avatar').setValue({
+        //   filename: file.name,
+        //   filetype: file.type,
+        //   value: reader.result.split(',')[1]
+        // })
+        
+        console.log((this.form.controls["scontrini"] as FormArray).controls[index].value.body);
+        var img = reader.result;
+        (this.form.controls["scontrini"] as FormArray).controls[index].value.body = img;
+        
+        // (this.form.value.scontrini as FormArray)[index]['body'] = reader.result;
+      };
+    }
+    else{
+      console.log("elimino la riga seleizionata per non lasciarla vuota");
+      (this.form.controls["scontrini"] as FormArray).removeAt(index);
+    }
+  }
+
+  //generazione campo scontrino per la form group
+  generateScontrino(){
+    return this._fb.group({
+      body: ""
+    })
+  }
+
+  //aggiunta di un nuovo scontrino nella form
+  aggiungiNuovoScontrino(){
+    //controllo se l'ultimo scontrino presente è pieno
+    let numeroScontrini = (this.form.controls["scontrini"] as FormArray).length;
+    
+    
+    if (numeroScontrini > 0){
+      console.log((this.form.controls["scontrini"] as FormArray).controls[numeroScontrini-1].value.body);
+      if ((this.form.controls["scontrini"] as FormArray).controls[numeroScontrini-1].value.body === ""){
+        alert("Prima di inserire un nuovo scontrino, utilizza quelli caricati.");
+        return;
+      } 
+    }
+    (this.form.controls["scontrini"] as FormArray).push(this.generateScontrino()); 
+    
+  }
+
+  dbg(){
+    console.log((this.form.controls["scontrini"] as FormArray).controls[0].value.body);
+  }
+
+  //rimozione scontrino dalla form in base all'index passato alla funzione
+  rimuoviScontrino(index: number){
+    (this.form.controls["scontrini"] as FormArray).removeAt(index);
+  }
+  
 }
+
+
