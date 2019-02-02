@@ -28,8 +28,10 @@
  
 
 <hr>
-<form [formGroup]="p" (ngSubmit)="onSubmit()">
-  
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <select formControlName="tipologialavoro">
+        <option *ngFor="let v of _scelteTipoLavoro" value="{{v.value}}">{{v.nome}}</option>
+   </select>
   <table>
       <tr>
         <th>Data Intervento</th>
@@ -42,20 +44,20 @@
         <td><input type="date"   formControlName="dataintervento" ></td>
         <td><input type="number" formControlName="totalelavoro" ></td>
         <td><input type="number" formControlName="totaleviaggio" ></td>
-        <td><input type="number" formControlName="spese"></td>
-        <td><input type="number" formControlName="km"></td>
-        <!-- <td><input type="number" formControlName="km"  [attr.disabled]="(_resocontoLavoro.tipologialavoro == 2) ? '' : null"></td> -->
+        <td><input type="number" formControlName="spese" [attr.disabled]="(form.controls['tipologialavoro'].value == 2) ? '' : null"></td>
+        <td><input type="number" formControlName="km" [attr.disabled]="(form.controls['tipologialavoro'].value == 2) ? '' : null"></td>
       </tr>
     </table>
     <div formArrayName="scontrini"
-      *ngFor="let item of p.controls['scontrini'].controls; let i = index">
+      *ngFor="let item of form.controls['scontrini'].controls; let i = index">
       <div [formGroupName]="i">
         <input type="file" formControlName='body'>
+        <button type="button" (click)="rimuoviScontrino(i)">Elimina Scontrino</button>
       </div>
     </div>
     <button type="button" (click)="aggiungiNuovoScontrino()">Aggiungi nuovo scontrino</button>
     <hr>
     <input type="text" formControlName="info">
-    <button type="submit" [disabled]="!p.valid">Submit</button>
+    <button type="submit" [disabled]="!form.valid">Submit</button>
     
 </form>

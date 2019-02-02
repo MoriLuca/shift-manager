@@ -42,6 +42,8 @@ export class ApiService {
 
   postSalvataggioResocontoLavoro(resoconto: ResocontoLavoro){
     let body =  JSON.stringify(resoconto);
+    console.log(body);
+    
     return this.http.post(this.endpoint + 'resocontolavoro', body, this.httpOptions);
   }
 
