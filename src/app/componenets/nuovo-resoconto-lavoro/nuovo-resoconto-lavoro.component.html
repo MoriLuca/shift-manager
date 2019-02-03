@@ -1,65 +1,63 @@
-<input type="text" [(ngModel)]="_ricercaCliente">
-<table>
-  <tr>
-      <th>Nome Cliente</th>
-  </tr>
-  <tr *ngFor="let cliente of _clienti"
-      (click)="getCommesseFromClientId(cliente)">
-    <td *ngIf="cliente.nome.toLowerCase().includes(_ricercaCliente.toLowerCase())">{{cliente.nome}}</td>
-  </tr>
-</table>
+<div class="grid-container">
 
-<input type="text" [(ngModel)]="_ricercaCommessa">
-<table>
-  <tr>
-      <th>Titolo Commessa</th>
-  </tr>
-  <tr *ngFor="let commessa of _commesse"
-      (click)="setCommessaSelezionata(commessa)">
-    <td *ngIf="commessa.nome.toLowerCase().includes(_ricercaCommessa.toLowerCase())">{{commessa.nome}}</td>
-  </tr>
-</table>
-
-
-
-
-    
-    
- 
-<button type="button" (click)="dbg()">dbg</button>
-<hr>
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <select formControlName="tipologialavoro">
-        <option *ngFor="let v of _scelteTipoLavoro" value="{{v.value}}">{{v.nome}}</option>
-   </select>
-  <table>
+  <div class="clienti">
+    <input type="text" [(ngModel)]="_ricercaCliente">
+    <table>
       <tr>
-        <th>Data Intervento</th>
-        <th>Ore Lavoro</th>
-        <th>Ore Viaggio</th>
-        <th>Spese</th>
-        <th>Chilometri</th>
+        <th>Nome Cliente</th>
       </tr>
-      <tr>
-        <td><input type="date"   formControlName="dataintervento" ></td>
-        <td><input type="number" formControlName="totalelavoro" ></td>
-        <td><input type="number" formControlName="totaleviaggio" ></td>
-        <td><input type="number" formControlName="spese" [attr.disabled]="(form.controls['tipologialavoro'].value == 2) ? '' : null"></td>
-        <td><input type="number" formControlName="km" [attr.disabled]="(form.controls['tipologialavoro'].value == 2) ? '' : null"></td>
+      <tr *ngFor="let cliente of _clienti" (click)="getCommesseFromClientId(cliente)">
+        <td *ngIf="cliente.nome.toLowerCase().includes(_ricercaCliente.toLowerCase())">{{cliente.nome}}</td>
       </tr>
     </table>
-    <div formArrayName="scontrini"
-      *ngFor="let item of form.controls.scontrini.controls; let i = index">
-      <div [formGroupName]="i">
-        <input type="file" formControlName='body' (change)="onFileChange($event, i)">
-        {{item.value.body}}
-        <img [src]="item.value.body" alt="" style="width: 100px; height: 100px; border: 1px solid red;">
-        <button type="button" (click)="rimuoviScontrino(i)">Elimina Scontrino</button>
+  </div>
+
+  <div class="commesse">
+    <input type="text" [(ngModel)]="_ricercaCommessa">
+    <table>
+      <tr>
+        <th>Titolo Commessa</th>
+      </tr>
+      <tr *ngFor="let commessa of _commesse" (click)="setCommessaSelezionata(commessa)">
+        <td *ngIf="commessa.nome.toLowerCase().includes(_ricercaCommessa.toLowerCase())">{{commessa.nome}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="resoconto-lavoro">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <select formControlName="tipologialavoro">
+        <option *ngFor="let v of _scelteTipoLavoro" value="{{v.value}}">{{v.nome}}</option>
+      </select>
+      <table>
+        <tr>
+          <th>Data Intervento</th>
+          <th>Ore Lavoro</th>
+          <th>Ore Viaggio</th>
+          <th>Spese</th>
+          <th>Chilometri</th>
+        </tr>
+        <tr>
+          <td><input type="date" formControlName="dataintervento"></td>
+          <td><input type="number" formControlName="totalelavoro"></td>
+          <td><input type="number" formControlName="totaleviaggio"></td>
+          <td><input type="number" formControlName="spese" [attr.disabled]="(form.controls['tipologialavoro'].value == 2) ? '' : null"></td>
+          <td><input type="number" formControlName="km" [attr.disabled]="(form.controls['tipologialavoro'].value == 2) ? '' : null"></td>
+        </tr>
+      </table>
+      <div formArrayName="scontrini" *ngFor="let item of form.controls.scontrini.controls; let i = index">
+        <div [formGroupName]="i">
+          <input type="file" formControlName='body' (change)="onFileChange($event, i)">
+          <img [src]="item.value.body" alt="" style="width: 100px; height: 100px; border: 1px solid red;">
+          <button type="button" (click)="rimuoviScontrino(i)">Elimina Scontrino</button>
+        </div>
       </div>
-    </div>
-    <button type="button" (click)="aggiungiNuovoScontrino()">Aggiungi nuovo scontrino</button>
-    <hr>
-    <input type="text" formControlName="info">
-    <button type="submit" [disabled]="!form.valid">Submit</button>
-    
-</form>
+      <button type="button" (click)="aggiungiNuovoScontrino()">Aggiungi nuovo scontrino</button>
+      <hr>
+      <input type="text" formControlName="info">
+      <button type="submit" class="form-confirm-btn" [disabled]="!form.valid">Submit</button>
+
+    </form>
+  </div>
+
+</div>

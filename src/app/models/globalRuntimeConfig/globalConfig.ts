@@ -5,5 +5,5 @@ export class GlobalRuntimeConfig {
     titoloApp = "GiDi Automazione"
     lang = 0;
     // user: IUser = new User();
-    user: IUser = {id: 3, nome: "Luca", cognome: "Mori", role: 2};
+    user: IUser = {id: 2, nome: "Luca", cognome: "Mori", role: 2};
   }
