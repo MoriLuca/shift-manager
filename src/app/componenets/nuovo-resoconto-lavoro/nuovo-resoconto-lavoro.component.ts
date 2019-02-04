@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Cliente } from 'src/app/models/clienti/cliente';
 import { ApiService } from 'src/app/services/api/api.service';
 import { CommessaBasic } from 'src/app/models/commesse/commessaBasic';
@@ -14,11 +14,12 @@ import { ValueConverter } from '@angular/compiler/src/render3/view/template';
   styleUrls: ['./nuovo-resoconto-lavoro.component.css']
 })
 export class NuovoResocontoLavoroComponent implements OnInit {
-
+  
   private _utenteId = 1;
   private _ricercaCliente: string ="";
   private _ricercaCommessa: string ="";
   private _titoloResocontoLavoro: string ="";
+  private _showUpdatingCover: boolean = false;
 
   form: FormGroup;
 
@@ -98,8 +99,7 @@ export class NuovoResocontoLavoroComponent implements OnInit {
   }
 
   onSubmit(){
-
-    console.warn(this.form.value);
+    this._showUpdatingCover = true;
     if(this.form.controls["tipologialavoro"].value == 2) {
       if (this.form.controls["spese"].value> 0 || this.form.controls["km"].value > 0){
         alert("Il valore di spese e chilometri verrà impstato a 0.\nNon si possono aggiungere spese e chiloetri se il tipo di lavoro è diverso da [ Installazione ].");
@@ -113,6 +113,7 @@ export class NuovoResocontoLavoroComponent implements OnInit {
         alert("Resoconto lavoro salvato correttamente.\nRighe inserite nel database : " + res['rowEffected'] 
         +"\n\nLe righe inserite nel database devo essere il numero di scontrini inseriti + 1");
         this.loadResocontiHistory(r.commessaId);
+        this._showUpdatingCover = false;
       }
       else{
         alert("Errore salvataggio:\n"+res['error']);
@@ -168,7 +169,8 @@ export class NuovoResocontoLavoroComponent implements OnInit {
   }
 
   dbg(){
-    console.log((this.form.controls["scontrini"] as FormArray).controls[0].value.body);
+
+      
   }
 
   //rimozione scontrino dalla form in base all'index passato alla funzione

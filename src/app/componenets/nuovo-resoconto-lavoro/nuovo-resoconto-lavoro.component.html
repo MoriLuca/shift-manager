@@ -8,6 +8,7 @@
     </div>
   </div>
 
+
   <div class="box-style commesse">
     <div class="titolo-resoconto-lavoro">Commessa</div>
     <input class="form-control mb-1" type="text" [(ngModel)]="_ricercaCommessa" placeholder="Ricerca Commessa">
@@ -15,6 +16,15 @@
       <span *ngIf="commessa.nome.toLowerCase().includes(_ricercaCommessa.toLowerCase())">{{commessa.nome}}</span>
     </div>
   </div>
+
+
+
+  <div class="cover" *ngIf="_showUpdatingCover">
+    <div>
+      <fa name="paper-plane"></fa>
+    </div>
+  </div>
+
 
   <div class="box-style resoconto-lavoro">
     <div class="titolo-resoconto-lavoro">{{_titoloResocontoLavoro}}</div>
@@ -26,7 +36,7 @@
         <textarea class="form-control my-1" formControlName="info" rows="3" placeholder="Inserire resoconto del lavoro svolto ed eventuali note ..."></textarea>
         <table>
           <tr>
-            <th>Data Intervento</th>
+            <th>Data</th>
             <th>Ore Lavoro</th>
             <th>Ore Viaggio</th>
             <th>Spese</th>
@@ -40,49 +50,85 @@
             <td><input class="form-control" type="number" formControlName="km" [attr.disabled]="(form.controls['tipologialavoro'].value == 2) ? '' : null"></td>
           </tr>
         </table>
+
+
         <div formArrayName="scontrini" *ngFor="let item of form.controls.scontrini.controls; let i = index">
           <div [formGroupName]="i">
-            <button class="btn btn-warning" type="button" (click)="rimuoviScontrino(i)">
-              <fa name="trash"></fa> Elimina Scontrino
-            </button>
-            <input type="file" formControlName='body' (change)="onFileChange($event, i)">
-            <img [src]="item.value.body" alt="" style="width: 100px; height: 100px; border: 1px solid red;">
+            <div class="scontrino-container mt-2">
+              <div class="titolo-scontrino">Scontrino # {{i+1}}</div>
+              <input class="scontrino-input" type="file" formControlName='body' (change)="onFileChange($event, i)">
+              <img class="scontrino-img" [src]="item.value.body" alt="" style="border: 1px solid gainsboro; border-radius: 5px;">
+              <button class="btn btn-warning scontrino-rimuovi" type="button" (click)="rimuoviScontrino(i)">
+                <fa name="trash"></fa> Elimina Scontrino
+              </button>
+            </div>
           </div>
         </div>
-        <button class="btn btn-primary" type="button" (click)="aggiungiNuovoScontrino()">
+
+        <button class="btn btn-primary mt-2" type="button" (click)="aggiungiNuovoScontrino()">
           <fa name="plus"></fa> Aggiungi nuovo scontrino
         </button>
         <hr>
-        <button type="submit" class="btn btn-success" [disabled]="!form.valid">Submit</button>
-
+        <div style="width: 95%; margin: auto;">
+          <button style="width: 100%; margin: auto;" type="submit" class="btn btn-success" [disabled]="!form.valid">Submit</button>
+        </div>
       </div>
 
     </form>
   </div>
 
+
+
+
   <div class="box-style raccolta-lavori">
     <div class="titolo-resoconto-lavoro">Riepilogo resoconti archiviati</div>
-      <table class="table table-striped body-scrollable">
-        <thead>
-            <th width="5%">Data</th>
-            <th width="20%">Tipo Lavoro</th>
-            <th width="10%">Ore Lavoro</th>
-            <th width="10%">Ore Viaggio</th>
-            <th width="10%">Spese</th>
-            <th width="10%">Km</th>
-            <th width="20%">Info</th>
-        </thead>
-        <tbody >
-          <tr *ngFor="let res of _storiaResoconti" class="list-item">
-            <td width="5%">{{res.dataIntervento | date:'dd/MM/yy'}}</td>
-            <td width="20%">{{_scelteTipoLavoro[res.tipologiaLavoro-1].nome}}</td>
-            <td width="10%">{{res.totaleLavoro}}</td>
-            <td width="10%">{{res.totaleViaggio}}</td>
-            <td width="10%">{{res.spese}}</td>
-            <td width="10%">{{res.km}}</td>
-            <td width="20%">{{(res.info.length > 25 )?res.info.substr(0,25)+"..." : res.info}}</td>
-          </tr>
-        </tbody>
-      </table>
+    <table class="table table-striped body-scrollable">
+      <thead>
+        <th width="5%">Data</th>
+        <th width="20%">Tipo Lavoro</th>
+        <th width="10%">Ore Lavoro</th>
+        <th width="10%">Ore Viaggio</th>
+        <th width="10%">Spese</th>
+        <th width="10%">Km</th>
+        <th width="20%">Info</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let res of _storiaResoconti" class="list-item">
+          <td width="5%">{{res.dataIntervento | date:'dd/MM/yy'}}</td>
+          <td width="20%">{{_scelteTipoLavoro[res.tipologiaLavoro-1].nome}}</td>
+          <td width="10%">{{res.totaleLavoro}}</td>
+          <td width="10%">{{res.totaleViaggio}}</td>
+          <td width="10%">{{res.spese}}</td>
+          <td width="10%">{{res.km}}</td>
+          <td width="20%">{{(res.info.length > 25 )?res.info.substr(0,25)+"..." : res.info}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+
+
+  <div class="box-style raccolta-lavori-mobile">
+    <div class="titolo-resoconto-lavoro">Riepilogo resoconti archiviati</div>
+    <table class="table table-striped body-scrollable-mobile">
+      <thead>
+        <th width="20%">Data</th>
+        <th width="40%">Type</th>
+        <th width="10%">L</th>
+        <th width="10%">V</th>
+        <th width="10%">S</th>
+        <th width="10%">Km</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let res of _storiaResoconti" class="list-item">
+          <td width="20%">{{res.dataIntervento | date:'dd/MM/yy'}}</td>
+          <td width="40%">{{_scelteTipoLavoro[res.tipologiaLavoro-1].nome.substring(0,15)+'...'}}</td>
+          <td width="10%">{{res.totaleLavoro}}</td>
+          <td width="10%">{{res.totaleViaggio}}</td>
+          <td width="10%">{{res.spese}}</td>
+          <td width="10%">{{res.km}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>

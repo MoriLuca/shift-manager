@@ -12,17 +12,17 @@
 }
 
 .navbar-brand:hover{
-    color: orangered;
+    color: cornflowerblue;
     transform: scale(1.1);
     -webkit-transform: scale(1.1);   
 }
 
 .outborder {
     clear: both;
-    background: tomato;
+    background: cornflowerblue;
     height: 3px;
 }
 
 .logo{
-    max-height: 40px;
+    height: 40px;
 }
