@@ -69,8 +69,10 @@ export class NuovoResocontoLavoroComponent implements OnInit {
   private resetTitoloResoconto(){
     this._titoloResocontoLavoro = "Attesa selezione cliente e commessa";
   }
+
   //richiesta dell'elenco commesse in base al cliente selezionato
   getCommesseFromClientId(cliente: Cliente){
+    this._storiaResoconti = null;
     this.resetTitoloResoconto();
     this.form.controls["commessaId"].setValue(-1);
     this._api.getCommesseBasicFromClientId(cliente.clienteId).subscribe((res)=>{
@@ -80,6 +82,7 @@ export class NuovoResocontoLavoroComponent implements OnInit {
   }
 
   private loadResocontiHistory(commessaId){
+    this._storiaResoconti = null;
     this._api.getResocontiFromUtenteCommessa(this._rntSrv.getConfig().user.id,commessaId).subscribe((res)=>{
       this._storiaResoconti = res;
       console.log(this._storiaResoconti);

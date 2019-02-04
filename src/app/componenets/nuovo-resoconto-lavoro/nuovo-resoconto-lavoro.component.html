@@ -2,19 +2,17 @@
 
   <div class="box-style clienti">
     <div class="titolo-resoconto-lavoro">Cliente</div>
-    <input class="form-control" type="text" [(ngModel)]="_ricercaCliente" placeholder="Ricerca Cliente">
-    <div class="list-item" *ngFor="let cliente of _clienti" (click)="getCommesseFromClientId(cliente)"
-         [ngClass]="(_clienteSelezionato.clienteId==cliente.clienteId)?'selected-row':''">
-      <span *ngIf="cliente.nome.toLowerCase().includes(_ricercaCliente.toLowerCase())" >{{cliente.nome}}</span>
+    <input class="form-control mb-1" type="text" [(ngModel)]="_ricercaCliente" placeholder="Ricerca Cliente">
+    <div class="list-item" *ngFor="let cliente of _clienti" (click)="getCommesseFromClientId(cliente)" [ngClass]="(_clienteSelezionato.clienteId==cliente.clienteId)?'selected-row':''">
+      <span *ngIf="cliente.nome.toLowerCase().includes(_ricercaCliente.toLowerCase())">{{cliente.nome}}</span>
     </div>
   </div>
 
   <div class="box-style commesse">
     <div class="titolo-resoconto-lavoro">Commessa</div>
-    <input class="form-control" type="text" [(ngModel)]="_ricercaCommessa" placeholder="Ricerca Commessa">
-    <div class="list-item" *ngFor="let commessa of _commesse" (click)="setCommessaSelezionata(commessa)"
-          [ngClass]="(form.controls['commessaId'].value==commessa.commessaId)?'selected-row':''">
-      <span *ngIf="commessa.nome.toLowerCase().includes(_ricercaCommessa.toLowerCase())" >{{commessa.nome}}</span>
+    <input class="form-control mb-1" type="text" [(ngModel)]="_ricercaCommessa" placeholder="Ricerca Commessa">
+    <div class="list-item" *ngFor="let commessa of _commesse" (click)="setCommessaSelezionata(commessa)" [ngClass]="(form.controls['commessaId'].value==commessa.commessaId)?'selected-row':''">
+      <span *ngIf="commessa.nome.toLowerCase().includes(_ricercaCommessa.toLowerCase())">{{commessa.nome}}</span>
     </div>
   </div>
 
@@ -63,9 +61,28 @@
   </div>
 
   <div class="box-style raccolta-lavori">
-      <div class="titolo-resoconto-lavoro">Riepilogo resoconti archiviati</div>
-      <div class="hystory-item" *ngFor="let res of _storiaResoconti">
-        {{res.dataIntervento | date:'dd/MM/yy'}} - {{res.totaleLavoro}} - {{res.totaleViaggio}}
-      </div>
+    <div class="titolo-resoconto-lavoro">Riepilogo resoconti archiviati</div>
+      <table class="table table-striped body-scrollable">
+        <thead>
+            <th width="5%">Data</th>
+            <th width="20%">Tipo Lavoro</th>
+            <th width="10%">Ore Lavoro</th>
+            <th width="10%">Ore Viaggio</th>
+            <th width="10%">Spese</th>
+            <th width="10%">Km</th>
+            <th width="20%">Info</th>
+        </thead>
+        <tbody >
+          <tr *ngFor="let res of _storiaResoconti" class="list-item">
+            <td width="5%">{{res.dataIntervento | date:'dd/MM/yy'}}</td>
+            <td width="20%">{{_scelteTipoLavoro[res.tipologiaLavoro-1].nome}}</td>
+            <td width="10%">{{res.totaleLavoro}}</td>
+            <td width="10%">{{res.totaleViaggio}}</td>
+            <td width="10%">{{res.spese}}</td>
+            <td width="10%">{{res.km}}</td>
+            <td width="20%">{{(res.info.length > 25 )?res.info.substr(0,25)+"..." : res.info}}</td>
+          </tr>
+        </tbody>
+      </table>
   </div>
 </div>
