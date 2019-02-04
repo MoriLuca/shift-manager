@@ -18,6 +18,7 @@ export class NuovoResocontoLavoroComponent implements OnInit {
   private _utenteId = 1;
   private _ricercaCliente: string ="";
   private _ricercaCommessa: string ="";
+  private _titoloResocontoLavoro: string ="";
 
   form: FormGroup;
 
@@ -36,11 +37,14 @@ export class NuovoResocontoLavoroComponent implements OnInit {
 ///////////////////
 
 
-  private _clienteSelezionato: Cliente;
+  private _clienteSelezionato: Cliente = new Cliente();
   private _commessaSelezionata: CommessaBasic;
+
+  private _storiaResoconti: any;
 
   ngOnInit() {
     //alla creazione del modulo, richiedo la lista clienti
+    this.resetTitoloResoconto();
     this._api.getElelncoClienti().subscribe((res)=>{
       this._clienti = res;
     });
@@ -49,7 +53,7 @@ export class NuovoResocontoLavoroComponent implements OnInit {
     //creo la reactive form per la gestione del nuovo resoconto di lavoro
     this.form = this._fb.group({
       utenteId: [this._rntSrv.getUser().id ,Validators.min(1)],
-      commessaId: [1, Validators.min(1)],
+      commessaId: [-1, Validators.min(1)],
       dataintervento: [new Date().toISOString().substring(0,10)],
       totalelavoro: [0, [Validators.min(0), Validators.max(24)]],
       totaleviaggio: [0, [Validators.min(0), Validators.max(24)]],
@@ -61,18 +65,33 @@ export class NuovoResocontoLavoroComponent implements OnInit {
     });
   }
 
+
+  private resetTitoloResoconto(){
+    this._titoloResocontoLavoro = "Attesa selezione cliente e commessa";
+  }
   //richiesta dell'elenco commesse in base al cliente selezionato
   getCommesseFromClientId(cliente: Cliente){
+    this.resetTitoloResoconto();
     this.form.controls["commessaId"].setValue(-1);
     this._api.getCommesseBasicFromClientId(cliente.clienteId).subscribe((res)=>{
       this._commesse = res;
       this._clienteSelezionato = cliente;
-      console.log(res);
+    });
+  }
+
+  private loadResocontiHistory(commessaId){
+    this._api.getResocontiFromUtenteCommessa(this._rntSrv.getConfig().user.id,commessaId).subscribe((res)=>{
+      this._storiaResoconti = res;
+      console.log(this._storiaResoconti);
+      
+      
     });
   }
 
   setCommessaSelezionata(commessa: CommessaBasic){
     this.form.controls["commessaId"].setValue(commessa.commessaId);
+    this._titoloResocontoLavoro = `Resoconto lavoro per il cliente ${this._clienteSelezionato.nome} - commessa ${commessa.nome}`;
+    this.loadResocontiHistory(commessa.commessaId);
   }
 
   onSubmit(){
@@ -87,7 +106,14 @@ export class NuovoResocontoLavoroComponent implements OnInit {
     }
     let r: ResocontoLavoro = <ResocontoLavoro> this.form.value;
     this._api.postSalvataggioResocontoLavoro(r).subscribe((res)=>{
-      console.log(res);
+      if(res['error'] === undefined ){
+        alert("Resoconto lavoro salvato correttamente.\nRighe inserite nel database : " + res['rowEffected'] 
+        +"\n\nLe righe inserite nel database devo essere il numero di scontrini inseriti + 1");
+        this.loadResocontiHistory(r.commessaId);
+      }
+      else{
+        alert("Errore salvataggio:\n"+res['error']);
+      }
       
     });
   }
@@ -101,17 +127,11 @@ export class NuovoResocontoLavoroComponent implements OnInit {
       let file = event.target.files[0];
       reader.readAsDataURL(file);
       reader.onload = () => {
-        // this.form.get('avatar').setValue({
-        //   filename: file.name,
-        //   filetype: file.type,
-        //   value: reader.result.split(',')[1]
-        // })
         
         console.log((this.form.controls["scontrini"] as FormArray).controls[index].value.body);
         var img = reader.result;
         (this.form.controls["scontrini"] as FormArray).controls[index].value.body = img;
         
-        // (this.form.value.scontrini as FormArray)[index]['body'] = reader.result;
       };
     }
     else{

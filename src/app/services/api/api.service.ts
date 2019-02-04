@@ -40,6 +40,10 @@ export class ApiService {
     return this.http.get<CommessaBasic[]>(this.endpoint + 'commesse?clienteId='+clienteId, this.httpOptions);
   }
 
+  getResocontiFromUtenteCommessa(utenteId: number, commessaId: number){
+    return this.http.get(this.endpoint + `resocontolavoro?utenteid=${utenteId}&commessaid=${commessaId}`, this.httpOptions);
+  }
+
   postSalvataggioResocontoLavoro(resoconto: ResocontoLavoro){
     let body =  JSON.stringify(resoconto);
     console.log(body);

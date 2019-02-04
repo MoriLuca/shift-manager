@@ -1,63 +1,71 @@
 <div class="grid-container">
 
-  <div class="clienti">
-    <input type="text" [(ngModel)]="_ricercaCliente">
-    <table>
-      <tr>
-        <th>Nome Cliente</th>
-      </tr>
-      <tr *ngFor="let cliente of _clienti" (click)="getCommesseFromClientId(cliente)">
-        <td *ngIf="cliente.nome.toLowerCase().includes(_ricercaCliente.toLowerCase())">{{cliente.nome}}</td>
-      </tr>
-    </table>
+  <div class="box-style clienti">
+    <div class="titolo-resoconto-lavoro">Cliente</div>
+    <input class="form-control" type="text" [(ngModel)]="_ricercaCliente" placeholder="Ricerca Cliente">
+    <div class="list-item" *ngFor="let cliente of _clienti" (click)="getCommesseFromClientId(cliente)"
+         [ngClass]="(_clienteSelezionato.clienteId==cliente.clienteId)?'selected-row':''">
+      <span *ngIf="cliente.nome.toLowerCase().includes(_ricercaCliente.toLowerCase())" >{{cliente.nome}}</span>
+    </div>
   </div>
 
-  <div class="commesse">
-    <input type="text" [(ngModel)]="_ricercaCommessa">
-    <table>
-      <tr>
-        <th>Titolo Commessa</th>
-      </tr>
-      <tr *ngFor="let commessa of _commesse" (click)="setCommessaSelezionata(commessa)">
-        <td *ngIf="commessa.nome.toLowerCase().includes(_ricercaCommessa.toLowerCase())">{{commessa.nome}}</td>
-      </tr>
-    </table>
+  <div class="box-style commesse">
+    <div class="titolo-resoconto-lavoro">Commessa</div>
+    <input class="form-control" type="text" [(ngModel)]="_ricercaCommessa" placeholder="Ricerca Commessa">
+    <div class="list-item" *ngFor="let commessa of _commesse" (click)="setCommessaSelezionata(commessa)"
+          [ngClass]="(form.controls['commessaId'].value==commessa.commessaId)?'selected-row':''">
+      <span *ngIf="commessa.nome.toLowerCase().includes(_ricercaCommessa.toLowerCase())" >{{commessa.nome}}</span>
+    </div>
   </div>
 
-  <div class="resoconto-lavoro">
+  <div class="box-style resoconto-lavoro">
+    <div class="titolo-resoconto-lavoro">{{_titoloResocontoLavoro}}</div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <select formControlName="tipologialavoro">
-        <option *ngFor="let v of _scelteTipoLavoro" value="{{v.value}}">{{v.nome}}</option>
-      </select>
-      <table>
-        <tr>
-          <th>Data Intervento</th>
-          <th>Ore Lavoro</th>
-          <th>Ore Viaggio</th>
-          <th>Spese</th>
-          <th>Chilometri</th>
-        </tr>
-        <tr>
-          <td><input type="date" formControlName="dataintervento"></td>
-          <td><input type="number" formControlName="totalelavoro"></td>
-          <td><input type="number" formControlName="totaleviaggio"></td>
-          <td><input type="number" formControlName="spese" [attr.disabled]="(form.controls['tipologialavoro'].value == 2) ? '' : null"></td>
-          <td><input type="number" formControlName="km" [attr.disabled]="(form.controls['tipologialavoro'].value == 2) ? '' : null"></td>
-        </tr>
-      </table>
-      <div formArrayName="scontrini" *ngFor="let item of form.controls.scontrini.controls; let i = index">
-        <div [formGroupName]="i">
-          <input type="file" formControlName='body' (change)="onFileChange($event, i)">
-          <img [src]="item.value.body" alt="" style="width: 100px; height: 100px; border: 1px solid red;">
-          <button type="button" (click)="rimuoviScontrino(i)">Elimina Scontrino</button>
+      <div class="form-group">
+        <select class="form-control" formControlName="tipologialavoro">
+          <option *ngFor="let v of _scelteTipoLavoro" value="{{v.value}}">{{v.nome}}</option>
+        </select>
+        <textarea class="form-control my-1" formControlName="info" rows="3" placeholder="Inserire resoconto del lavoro svolto ed eventuali note ..."></textarea>
+        <table>
+          <tr>
+            <th>Data Intervento</th>
+            <th>Ore Lavoro</th>
+            <th>Ore Viaggio</th>
+            <th>Spese</th>
+            <th>Chilometri</th>
+          </tr>
+          <tr>
+            <td><input class="form-control" type="date" formControlName="dataintervento"></td>
+            <td><input class="form-control" type="number" formControlName="totalelavoro"></td>
+            <td><input class="form-control" type="number" formControlName="totaleviaggio"></td>
+            <td><input class="form-control" type="number" formControlName="spese" [attr.disabled]="(form.controls['tipologialavoro'].value == 2) ? '' : null"></td>
+            <td><input class="form-control" type="number" formControlName="km" [attr.disabled]="(form.controls['tipologialavoro'].value == 2) ? '' : null"></td>
+          </tr>
+        </table>
+        <div formArrayName="scontrini" *ngFor="let item of form.controls.scontrini.controls; let i = index">
+          <div [formGroupName]="i">
+            <button class="btn btn-warning" type="button" (click)="rimuoviScontrino(i)">
+              <fa name="trash"></fa> Elimina Scontrino
+            </button>
+            <input type="file" formControlName='body' (change)="onFileChange($event, i)">
+            <img [src]="item.value.body" alt="" style="width: 100px; height: 100px; border: 1px solid red;">
+          </div>
         </div>
+        <button class="btn btn-primary" type="button" (click)="aggiungiNuovoScontrino()">
+          <fa name="plus"></fa> Aggiungi nuovo scontrino
+        </button>
+        <hr>
+        <button type="submit" class="btn btn-success" [disabled]="!form.valid">Submit</button>
+
       </div>
-      <button type="button" (click)="aggiungiNuovoScontrino()">Aggiungi nuovo scontrino</button>
-      <hr>
-      <input type="text" formControlName="info">
-      <button type="submit" class="form-confirm-btn" [disabled]="!form.valid">Submit</button>
 
     </form>
   </div>
 
+  <div class="box-style raccolta-lavori">
+      <div class="titolo-resoconto-lavoro">Riepilogo resoconti archiviati</div>
+      <div class="hystory-item" *ngFor="let res of _storiaResoconti">
+        {{res.dataIntervento | date:'dd/MM/yy'}} - {{res.totaleLavoro}} - {{res.totaleViaggio}}
+      </div>
+  </div>
 </div>

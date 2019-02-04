@@ -1,27 +1,59 @@
 .grid-container{
-    border: 1px solid red;
+    margin: 5px;
+    border-radius: 3px;
+    border: 1px solid gray;
     display: grid;
-    padding:1em;
-    grid-template-columns: 1fr 1fr 3fr;
-    grid-template-rows: 3fr 5fr 1fr ;
-    background: #eee;
+    padding:.5em;
+    grid-template-columns: 1fr 1fr 4fr;
+    grid-template-rows: 3fr 5fr 4fr;
+    max-height: 90vh;
+    position: relative;
+}
+
+.box-style{
+    margin: 3px;
+    border: 1px solid lightsteelblue;
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 5px;
 }
 
 .clienti{
     grid-column: 1/2;
-    grid-row: 1/1;
+    grid-row: 1/3;
 }
 .commesse{
     grid-column: 2/3;
-    grid-row: 1/1;
+    grid-row: 1/3;
 }
 .resoconto-lavoro{
     grid-column: 3/4;
-    grid-row: 1/4;
+    grid-row: 1/3;
 }
 
-/* .header{
-    background: yellow;
-    grid-column: 3/5;
-    grid-row: 3/6;
-} */
+.raccolta-lavori{
+    grid-column: 1/4;
+    grid-row: 3/4;
+}
+
+.list-item{
+    transition: all .3s;
+    width: 100%;
+}
+
+.list-item:hover{
+    background: lightgreen;
+}
+
+.selected-row{
+    background: rgb(195, 233, 195);
+    color: forestgreen;
+}
+
+.titolo-resoconto-lavoro{
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: rgb(175, 194, 231);
+    text-align: center;
+    margin: -5px -5px 5px -5px;
+}
