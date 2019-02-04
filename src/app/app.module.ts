@@ -20,6 +20,7 @@ import { NotFoundComponentComponent } from './componenets/not-found-component/no
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignaturePadComponent } from './componenets/signature-pad/signature-pad.component';
 import { NuovoResocontoLavoroComponent } from './componenets/nuovo-resoconto-lavoro/nuovo-resoconto-lavoro.component';
+import { ClientiComponent } from './componenets/clienti/clienti.component';
 
 
 
@@ -33,6 +34,7 @@ import { NuovoResocontoLavoroComponent } from './componenets/nuovo-resoconto-lav
     NotFoundComponentComponent,
     SignaturePadComponent,
     NuovoResocontoLavoroComponent,
+    ClientiComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,6 +46,8 @@ import { NuovoResocontoLavoroComponent } from './componenets/nuovo-resoconto-lav
     RouterModule.forRoot([
       {path:"",component: HomeComponent},
       {path:"pad",component: SignaturePadComponent},
+      {path:"clienti",component: ClientiComponent},
+      {path:"nuovoResoconto",component: NuovoResocontoLavoroComponent},
       //esempi
       // {path:"laghi",component: LaghiComponent},
       // {path:"lago/:id",component: LagoComponent},

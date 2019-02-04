@@ -1,0 +1,23 @@
+<div class="grid-container">
+
+  <div class="box-style clienti">
+    <div class="box-title">Lista Clienti GiDi</div>
+    <input class="form-control mb-1" type="text" [(ngModel)]="_ricercaCliente" placeholder="Ricerca Cliente">
+    <div class="list-item" *ngFor="let cliente of _clienti" (click)="selectCliente(cliente)" [ngClass]="(_clienteSelezionato.clienteId==cliente.clienteId)?'selected-row':''">
+      <span *ngIf="cliente.nome.toLowerCase().includes(_ricercaCliente.toLowerCase())">{{cliente.nome}}</span>
+    </div>
+  </div>
+
+  <div class="box-style nuovo-cliente">
+    <div class="box-title">Aggiungi Nuovo Cliente</div>
+    <input class="form-control mb-1" type="text" [(ngModel)]="_clienteSelezionato.nome" placeholder="Nessun utente selezionato">
+    <button class="btn btn-primary"> Salva Modifice</button>
+  </div>
+
+  <div class="box-style modifica-cliente">
+    <div class="box-title">Modifica cliente essitente</div>
+    <input class="form-control mb-1" type="text" [(ngModel)]="_clienteSelezionato.nome" placeholder="Nessun utente selezionato">
+    <button class="btn btn-primary"> Salva Modifice</button>
+  </div>
+
+</div>

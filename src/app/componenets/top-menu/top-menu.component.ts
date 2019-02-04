@@ -16,6 +16,7 @@ export class TopMenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.rtmSvc.getUser().role
   }
 
 }

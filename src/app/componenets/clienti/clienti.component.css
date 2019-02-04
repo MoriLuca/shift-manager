@@ -1,0 +1,56 @@
+.grid-container {
+  margin: 5px;
+  border-radius: 3px;
+  border: 1px solid gray;
+  display: grid;
+  padding: .5em;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  height: 90vh;
+  position: relative;
+}
+
+.box-style {
+  margin: 3px;
+  border: 1px solid lightsteelblue;
+  border-radius: 5px;
+  overflow: auto;
+  padding: 10px;
+}
+
+.box-title {
+  margin-bottom: 5px;
+  padding: 5px;
+  background-color: rgb(175, 194, 231);
+  text-align: center;
+  margin: -10px;
+  margin-bottom: 10px;
+}
+
+.list-item:hover {
+  background: lightgreen;
+}
+
+.selected-row {
+  background: rgb(195, 233, 195);
+  color: forestgreen;
+  transform: scale(1);
+  text-align: right;
+  padding-right: 3em;
+  border-radius: 5px;
+}
+
+.clienti {
+  grid-column: 1/2;
+  grid-row: 1/3;
+}
+
+.nuovo-cliente {
+  grid-column: 2/3;
+  grid-row: 1/2;
+}
+
+.modifica-cliente {
+  grid-column: 2/3;
+  grid-row: 2/3;
+}
